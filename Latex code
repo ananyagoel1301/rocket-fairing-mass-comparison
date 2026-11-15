@@ -1,0 +1,1633 @@
+\documentclass[12pt,a4paper]{article}
+
+% --------------------------------------------------
+% Packages
+% --------------------------------------------------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.17}
+% --------------------------------------------------
+% Colours
+% --------------------------------------------------
+\definecolor{plakshamagenta}{RGB}{170,0,100}
+
+% --------------------------------------------------
+% Hyperref
+% --------------------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=plakshamagenta,
+    citecolor=plakshamagenta,
+    urlcolor=blue
+}
+
+% --------------------------------------------------
+% Page style
+% --------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textit{Advanced Calculus}}
+\fancyhead[R]{\textit{Monsoon 2026}}
+\fancyfoot[C]{\thepage}
+
+% --------------------------------------------------
+% Line spacing
+% --------------------------------------------------
+\onehalfspacing
+
+
+% --------------------------------------------------
+% Document
+% --------------------------------------------------
+\begin{document}
+
+% ==================================================
+% TITLE PAGE
+% ==================================================
+
+\begin{titlepage}
+
+\begin{center}
+\vspace*{0.5cm}
+
+\includegraphics[width=2cm]{plaksha_logo.png}
+
+\vspace{0.5cm}
+
+
+{\Large\textcolor{teal}{\textbf{PLAKSHA UNIVERSITY}}}
+
+\vspace{0.4cm}
+
+{\large Freshmore First Semester}
+
+\vspace{1.5cm}
+
+{\Large\textcolor{plakshamagenta}{\textbf{ADVANCED CALCULUS}}}
+
+\vspace{0.3cm}
+
+{\large FM116 --- Monsoon 2026}
+
+\vspace{1.5cm}
+
+\rule{\textwidth}{1pt}
+
+\vspace{0.5cm}
+
+{\Huge\textbf{PROJECT REPORT}}
+
+\vspace{0.5cm}
+
+{\LARGE\textcolor{plakshamagenta}{\textbf{Launch Vehicle: Mass Comparison of Two Designs}}}
+
+\vspace{0.5cm}
+
+\rule{\textwidth}{1pt}
+
+\vspace{1.5cm}
+
+{\large
+\textbf{Group Members}
+}
+
+\vspace{0.5cm}
+
+\begin{tabular}{ll}
+1. & Ananya Goel (U20260039) \\
+2. & Meet Patel (U20260306) \\
+3. & Adhrit Didwania (U20260010) \\
+4. & Akepati Gunavathi (U20260031) \\
+5. & Akshadha Bhutani  (U20260032) \\
+\end{tabular}
+
+\vspace{1.2cm}
+
+\textbf{Course Instructor}
+
+\vspace{0.3cm}
+
+Dr.\ Suresh Kumar 
+
+\vfill
+
+{\large
+Plaksha University\\
+Mohali, Punjab, India
+}
+
+\vspace{0.025cm}
+
+{\large September 2026}
+
+\end{center}
+
+\end{titlepage}
+
+% ==================================================
+% DECLARATION
+% ==================================================
+
+\section*{\textcolor{plakshamagenta}{Declaration}}
+
+We, the undersigned members of the group, declare that this project
+report has been prepared as part of the requirements for the
+\textit{Advanced Calculus (FM116)} course offered at Plaksha University
+during the Monsoon 2026 semester.
+
+We have collaborated on the mathematical development,
+analysis, computations, visualizations, and preparation of this report.
+All external sources, computational tools, and references used in the
+project have been acknowledged appropriately.
+
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{p{0.42\textwidth}p{0.42\textwidth}}
+
+Ananya Goel & Akepati Gunavathi\\[-0.2cm]
+\hrulefill & \hrulefill\\
+Student 1 & Student 2\\[1cm]
+
+Adhrit Didwania & Meet Patel \\[-0.2cm]
+\hrulefill & \hrulefill\\
+Student 3 & Student 4\\[1cm]
+ Akshadha Bhutani \\[-0.2cm]
+\multicolumn{2}{c}{\hrulefill}\\
+\multicolumn{2}{c}{Student 5}
+
+\end{tabular}
+\end{center}
+
+\newpage
+
+% ==================================================
+% ABSTRACT
+% ==================================================
+
+\section*{\textcolor{plakshamagenta}{Abstract}}
+
+This project presents a comparative mathematical analysis of two rocket
+nose fairing designs to investigate how changes in internal
+geometry affect structural mass. Both designs use the same
+fixed external tangent-ogive profile but differ in their internal
+profiles. The baseline design uses an inner radius equal to
+90\% of the outer radius, while the modified design uses a
+constrained cubic polynomial.
+
+The fairing is modelled as a hollow surface of revolution.
+Definite integration is used to calculate the internal and
+material volumes of both designs. The material volumes are
+then converted into estimated masses using the assumed
+density of aluminium 6061. The modified profile is also
+checked against the specified internal-volume and minimum
+wall-thickness requirements.
+
+The project further develops a simplified model of the
+rocket's vertical powered ascent using first-order ordinary
+differential equations. Euler's method is used to estimate
+changes in altitude, velocity and mass under the assumed
+propulsion conditions.
+
+The modified profile gives an estimated material-mass reduction of 48.09\%
+(332.38\,kg to 172.52\,kg) with a larger internal volume, and meets the
+0.020\,m wall-thickness requirement over $0.4\le x\le1.5$\,m. However, the
+calculations rest on idealised geometric and physical assumptions and do not
+constitute a structural safety assessment or a validated prediction of
+rocket performance.
+
+
+\vspace{0.5cm}
+
+\noindent
+\textbf{Keywords:} 
+ Rocket nose fairing, tangent-ogive, cubic polynomial, surface of revolution, volume of revolution, ordinary differential equations, Euler's method.
+
+% ==================================================
+% CONTENTS
+% ==================================================
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+% ==================================================
+% 1. INTRODUCTION
+% ==================================================
+\section{\textcolor{plakshamagenta}{Introduction}}
+
+A rocket nose fairing is a protective structure fitted at the front of a launch vehicle. It protects the payload from aerodynamic forces, heating and the external environment during flight. However, the fairing also contributes to the total mass of the rocket. Since the rocket must accelerate its own mass during launch, reducing the mass of the fairing could leave more of the vehicle's mass capacity available for the payload or other requirements.
+
+This project investigates whether the structural mass of a rocket nose fairing can be reduced by modifying its internal geometry while keeping its external shape fixed. The aim is to compare two fairing designs and estimate how changing the inner profile affects the internal volume, material volume and resulting structural mass.
+
+The fairing is modelled as a hollow surface of revolution. Its external profile is represented by a fixed tangent-ogive curve. Two internal profiles are considered: a baseline profile whose radius is 90\% of the outer radius, and a modified profile represented by a constrained cubic polynomial. Since the outer profile remains unchanged, the comparison focuses on the effect of the internal geometry on the amount of material required.
+
+Mathematical functions are used to describe the inner and
+outer profiles. Derivatives are used to examine the smoothness
+of the outer profile at the junction between the nose and the
+cylindrical body. Definite integration is used to calculate
+the internal volume and material volume of both designs.
+The material volume is then converted into an estimated
+mass using the density of aluminium 6061.
+
+The modified design is assessed against two geometric requirements: its internal volume must be at least as large as that of the baseline design, and its wall thickness must satisfy the specified minimum over the evaluation interval. These conditions allow the two designs to be compared without changing the external profile.
+
+The project also investigates how the estimated fairing mass affects a simplified model of the rocket's vertical powered ascent. A system of ordinary differential equations is developed to describe altitude, velocity and mass under the effects of thrust, gravity and aerodynamic drag. Euler's method is used to obtain numerical estimates of the rocket's motion. The same engine and propellant assumptions are used for both designs so that the effect of the change in fairing mass can be examined.
+
+The analysis is based on mathematical and numerical models. The minimum wall thickness is treated as a geometric constraint and does not establish that the fairing is structurally safe under actual launch conditions. 
+% ==================================================
+% 2. MATHEMATICAL BACKGROUND
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Mathematical Background}}
+
+\subsection{Fairing Geometry and Continuity}\label{sec:geometry}
+
+This section sets up the shape of the nose fairing and checks how smoothly it joins the cylindrical body of the rocket.
+
+\subsection{Surface modelling}\label{sec:surface}
+
+We assume the fairing is axisymmetric, so one profile $y=f(x)$ rotated about the $x$-axis describes the whole surface. We put the origin at the tip of the nose. The $x$-axis runs along the rocket towards the tail, and $y\ge 0$ is the distance from the axis. The nose runs from $x=0$ to $x=L$, and the cylindrical body of radius $R$ starts at $x=L$. Rotating the profile about the $x$-axis gives the surface
+\begin{equation}
+  \mathbf{X}(x,\theta)=\bigl(x,\; y(x)\cos\theta,\; y(x)\sin\theta\bigr),
+  \qquad (x,\theta)\in D=[0,L]\times[0,2\pi].
+  \label{eq:surface}
+\end{equation}
+Every slice across the nose ($x=$ constant) is a circle of radius $y(x)$. The body is built the same way, with $y(x)=R$ for $x\ge L$.
+
+The first part of $\mathbf{X}$ is just $x$, so $\mathbf{X}_x=(1,\;y'\cos\theta,\;y'\sin\theta)$ is never zero. That means $x$ works as a parameter on both sides of the join. The angle $\theta$ only shows up inside $\cos\theta$ and $\sin\theta$, and these can be differentiated as many times as we like. So the surface is exactly as smooth as the profile $y(x)$, and any question about how smooth the fairing is becomes a question about $y,y',y''$, so we analyse the profile (Section~\ref{sec:continuity}). Note that $\mathbf{X}_\theta=(0,-y\sin\theta,y\cos\theta)$ vanishes at the tip $y=0$, so the parametrisation is singular there.
+
+\subsection{Geometry of the outer profile}\label{sec:outer}
+
+Table~\ref{tab:params} lists the values we use in every example. The radius grows from $y(0)=0$ at the tip to $y(L)=R$ at the join.
+
+\begin{table}[h!]
+\centering
+\caption{Geometric parameters of the fairing.}\label{tab:params}
+\begin{tabular}{|c|l|c|}
+\hline
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Value}\\ \hline
+$R$ & radius of the cylindrical body (diameter $2R=1.00$\,m) & $0.50$\,m\\
+$L$ & length of the nose, from tip to join & $1.50$\,m\\
+$\rho$ & radius of the ogive arc, derived in \eqref{eq:rho} & $2.50$\,m\\ \hline
+\end{tabular}
+\end{table}
+
+The outer profile is a tangent ogive, the classic bullet-shaped rocket nose \cite{nasa1973}. It is an arc of a large circle of radius $\rho$, whose centre lies directly below the join. The part of the circle from the tip up to the body is the top half of the nose profile. The ogive is \emph{tangent} to the cylinder because the arc and the line $y=R$ have the same slope at $x=L$, so the join has no corner.
+
+Because the profile is part of a circle, it bends by the same amount everywhere: its curvature is $1/\rho$. At the join it matches the height and slope of the body. But the body is straight, with curvature $0$, while the arc still has curvature $1/\rho$. We check this in Section~\ref{sec:continuity}.
+
+For the arc to touch the line $y=R$ at $x=L$, its centre must be at $(L,\,R-\rho)$. The arc must also pass through the tip $(0,0)$:
+\[
+  (0-L)^2+\bigl(0-(R-\rho)\bigr)^2=\rho^2
+  \;\Longrightarrow\; L^2+R^2-2R\rho=0 .
+\]
+Solving for $\rho$ gives the radius of the ogive. The top half of the circle is the profile (this needs $L\ge R$, which is true here):
+\begin{equation}
+  \rho=\frac{R^2+L^2}{2R},\qquad
+  y_o(x)=R-\rho+\sqrt{\rho^{2}-(L-x)^{2}},\quad 0\le x\le L.
+  \label{eq:rho}
+\end{equation}
+With $R=0.5$\,m and $L=1.5$\,m, we get $\rho=(0.25+2.25)/1.0=2.5$\,m, and the centre is at $(1.5,\,-2.0)$. Figure~\ref{fig:profile} shows the profile and Figure~\ref{fig:surface} the surface obtained from \eqref{eq:surface}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.85\textwidth]{figs/fig1_ogive_profile.pdf}
+\caption{Tangent-ogive profile followed by the cylindrical body (shown for 1.5\,m), on equal axes. The dotted line marks the join at $x=L$.}\label{fig:profile}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.55\textwidth]{figs/fig2_ogive_surface.pdf}
+\caption{The tangent-ogive fairing as a surface of revolution \eqref{eq:surface}, with 0.8\,m of body shown. The thick ring marks the join.}\label{fig:surface}
+\end{figure}
+
+\subsection{Continuity}\label{sec:continuity}
+
+\subsubsection{Meaning of $C^0$, $C^1$ and $C^2$}
+
+A function is of class $C^k$ if it and its first $k$ derivatives are all continuous. Two pieces of a surface that meet along an edge are $C^0$ there if they meet with no gap, and $C^k$ if their first $k$ derivatives also match there \cite{farin2002}. For the fairing this is a check on the profile at $x=L$. $C^0$ means there is no step in the skin, $C^1$ means there is no corner, and $C^2$ means the bending (curvature) does not jump. For a graph $y=f(x)$ the curvature is \cite{strang2016}
+\begin{equation}
+  \kappa(x)=\frac{y''(x)}{\bigl(1+y'(x)^2\bigr)^{3/2}},
+  \label{eq:kappa}
+\end{equation}
+with $\kappa<0$ when the profile bends towards the axis. At the join $y'=0$, so there $\kappa=y''$.
+
+\subsubsection{Derivatives of the ogive}
+
+Let $u=\rho^2-(L-x)^2$. Then $y_o=R-\rho+\sqrt u$ and $u'=2(L-x)$. The chain rule gives
+\begin{equation}
+  y_o'=\frac{u'}{2\sqrt u}=\frac{L-x}{\sqrt{\rho^{2}-(L-x)^{2}}}.
+  \label{eq:dyo}
+\end{equation}
+For the second derivative, we use the product rule on $(L-x)\,u^{-1/2}$:
+\[
+  y_o''=-u^{-1/2}-\tfrac12 (L-x)\,u^{-3/2}\,u'
+       =-\frac{u+(L-x)^2}{u^{3/2}},
+\]
+and since $u+(L-x)^2=\rho^2$,
+\begin{equation}
+  y_o''=-\frac{\rho^{2}}{\bigl(\rho^{2}-(L-x)^{2}\bigr)^{3/2}}.
+  \label{eq:d2yo}
+\end{equation}
+
+\subsubsection{Continuity at the join}
+
+For $x\ge L$ the body has $y_b=R$, $y_b'=0$ and $y_b''=0$. Writing $y(L^-)$ for the value just before the join:
+\begin{itemize}
+  \item $C^0$: from \eqref{eq:rho}, $y_o(L)=R-\rho+\sqrt{\rho^2}=R$, so the ogive is $C^0$.
+  \item $C^1$: from \eqref{eq:dyo}, $y_o'(L^-)=0/\rho=0$, so the ogive is $C^1$.
+  \item $C^2$: from \eqref{eq:d2yo}, $y_o''(L^-)=-\rho^2/(\rho^2)^{3/2}=-1/\rho=-0.400$\,m$^{-1}\ne 0$, so the ogive is \emph{not} $C^2$.
+\end{itemize}
+The curvature of the ogive is constant along the whole nose. Since $1+y_o'^2=\rho^2/u$, equation \eqref{eq:kappa} gives
+\[
+  \kappa_o(x)=\frac{-\rho^2u^{-3/2}}{(\rho^2/u)^{3/2}}=-\frac1\rho=-0.400\ \mathrm{m^{-1}}\qquad(0<x\le L),
+\]
+as expected for a circle. On the body $\kappa=0$, so at the join the curvature jumps from $-0.400$\,m$^{-1}$ to $0$ (Figure~\ref{fig:derivs}).
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{figs/fig3_ogive_derivatives.pdf}
+\caption{Slope, second derivative and curvature of the tangent ogive, followed by the body. The open circle is the nose-side value at $x=L$ and the filled circle the body value. The slope is continuous; $y''$ and $\kappa$ jump by $1/\rho=0.400$\,m$^{-1}$.}\label{fig:derivs}
+\end{figure}
+
+\paragraph{Inner cubic at the join.}
+The modified inner profile of Section~\ref{sec:fairing-compare} can be written
+$y_{i,c}=0.48\,\xi^2(3-2\xi)+C\,\xi(1-\xi)^2$ with $\xi=x/L$ and
+$C\approx0.98181$. It satisfies $y_{i,c}'(L)=0$ and
+$y_{i,c}''(L)=(2C-2.88)/L^2\approx-0.407\ \mathrm{m^{-1}}$, while
+$y_o''(L)=-0.400\ \mathrm{m^{-1}}$. Hence $t=y_o-y_{i,c}$ satisfies
+$t'(L)=0$ and $t''(L)\approx+0.007\ \mathrm{m^{-1}}$, so the wall thickness
+has a shallow local minimum of $0.020$\,m at the join, which is why its
+margin there is small.
+
+% ==================================================
+% 3. PROBLEM FORMULATION
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Problem Formulation}}
+
+The objective is to reduce the estimated material mass of the
+rocket nose fairing by modifying its internal profile while
+keeping its external profile unchanged.
+
+The project has four main objectives:
+
+\begin{enumerate}
+    \item Define the baseline and modified fairing profiles.
+    \item Calculate surface area, internal volume and material volume.
+    \item Estimate and compare the material mass of both designs.
+    \item Model the rocket's powered ascent using differential
+    equations and Euler's method.
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\caption{Main design requirements.}
+\begin{tabular}{lc}
+\toprule
+Requirement & Value\\
+\midrule
+Outer fairing radius & 0.50 m\\
+Nose length & 1.50 m\\
+Minimum internal volume (= baseline) & 0.524807 m$^3$\\
+Minimum wall thickness ($0.4\le x\le1.5$\,m) & 0.020 m\\
+Material & Aluminium 6061\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+% ==================================================
+% 4. MATHEMATICAL ANALYSIS
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Mathematical Analysis}}
+
+\
+\subsection{Forces Acting on the Rocket}
+
+During vertical powered ascent, three main forces act on the
+rocket: thrust, gravity and aerodynamic drag. Thrust acts
+upwards, while gravity and drag act downwards.
+
+The gravitational force is
+
+\begin{equation}
+F_g(t)=m(t)g(h(t)).
+\end{equation}
+
+The aerodynamic drag is
+
+\begin{equation}
+D(t)=\frac{1}{2}\rho_{\mathrm{USSA76}}(h(t))
+C_D A v(t)^2.
+\end{equation}
+where $\rho_{\mathrm{USSA76}}(h)$ denotes the atmospheric
+density at geometric altitude $h$, calculated using the
+U.S. Standard Atmosphere 1976 layer equations. Geometric
+altitude is converted to geopotential altitude for the
+density calculation. The model is applied up to 84.852 km
+geopotential altitude, above which density is set to zero
+as a simplifying assumption. The drag coefficient is
+$C_D = 0.3$ [6] and the reference frontal area is
+$A = \pi(0.5)^2 = 0.785398$ m$^2$.
+
+% --------------------------------------------------
+% 4.2 Equation of Motion
+% --------------------------------------------------
+
+
+\subsection{Equation of Motion}
+
+Taking upward as the positive direction, Newton's second law
+gives
+
+\begin{equation}
+T(t)-D(t)-m(t)g(h(t))
+=m(t)\frac{dv}{dt}.
+\end{equation}
+
+Therefore, the acceleration is
+
+\begin{equation}
+\boxed{
+\frac{dv}{dt}=
+\frac{T(t)-D(t)-m(t)g(h(t))}{m(t)}
+}
+\end{equation}
+\subsection{Variable Mass and Propellant Consumption}
+Since velocity is the rate of change of altitude,
+
+\begin{equation}
+\boxed{\frac{dh}{dt}=v(t).}
+\end{equation}
+
+During powered ascent, the rocket continuously consumes
+propellant. Assuming a constant propellant mass-flow
+rate $\dot{m}$, the rate of change of rocket mass is
+
+\begin{equation}
+\boxed{
+\frac{dm}{dt}=-\dot{m}.
+}
+\end{equation}
+
+The negative sign indicates that the total rocket mass
+decreases as propellant is consumed.
+
+Combining the equations for altitude, velocity and mass,
+the complete first-order system is
+
+\begin{equation}
+\boxed{
+\begin{aligned}
+\frac{dh}{dt} &= v,\\[4pt]
+\frac{dv}{dt} &=
+\frac{T-D-mg(h)}{m},\\[4pt]
+\frac{dm}{dt} &= -\dot{m}.
+\end{aligned}
+}
+\label{eq:rocket_system}
+\end{equation}
+
+This coupled system describes the rocket's vertical
+powered ascent under the effects of thrust, gravity,
+aerodynamic drag and propellant consumption.
+
+% --------------------------------------------------
+% 4.3 Variable Mass and Propellant Consumption
+% --------------------------------------------------
+
+\subsection{Double Integrals: Fairing Surface Area}
+The fairing is modelled as a surface of revolution about the rocket's longitudinal axis. Let $x$ denote axial distance from the nose tip and $y(x)$ the radial profile. For a surface generated by revolving $y(x)$ through $2\pi$, the area element is $dS=2\pi y\,ds$, where $ds=\sqrt{1+[y'(x)]^2}\,dx$. Hence
+\begin{equation}\label{eq:area-general}
+A=2\pi\int_0^L y(x)\sqrt{1+[y'(x)]^2}\,dx.
+\end{equation}
+This is the surface-area form of a double integral: the azimuthal integration contributes $2\pi$, while the meridional arc-length element accounts for the profile slope. All profiles share $R=0.5\,\mathrm{m}$ and $L=1.5\,\mathrm{m}$. The tangent-ogive generating-circle radius is $\rho=(R^2+L^2)/(2R)=2.5\,\mathrm{m}$.
+
+
+The parameterisation $\mathbf X(x,\theta)=(x,y(x)\cos\theta,y(x)\sin\theta)$ gives
+$\|\mathbf X_x\times\mathbf X_\theta\|=y(x)\sqrt{1+[y'(x)]^2}$.
+Thus the double integral over $x$ and $\theta$ reduces to (1). The slant factor
+$\sqrt{1+[y']^2}$ is essential: using the axial increment $dx$ alone would
+underestimate the true curved surface area.
+\begin{figure}[H]\centering
+\includegraphics[width=0.47\linewidth]{Fig_4_3_2_Surface_Revolution.png}\hfill
+\includegraphics[width=0.43\linewidth]{Fig_4_3_3_Differential_Surface_Element.png}
+\caption{Surface-of-revolution parameterisation and differential area element.}
+\label{fig:surface-element}
+\end{figure}
+
+\subsubsection{Tangent-ogive profile} The radial profile and derivative are
+\begin{equation}
+y_o(x)=\sqrt{6.25-(1.5-x)^2}-2,\qquad
+y'_o(x)=\frac{1.5-x}{\sqrt{6.25-(1.5-x)^2}}.
+\end{equation}
+They satisfy $y_o(0)=0$ and $y_o(1.5)=0.5\,\mathrm{m}$. Substitution in (\ref{eq:area-general}) gives
+\begin{align}
+A_o&=2\pi\int_0^{1.5}\left[\sqrt{6.25-(1.5-x)^2}-2\right]
+\sqrt{1+\frac{(1.5-x)^2}{6.25-(1.5-x)^2}}\,dx\\
+&=5\pi\int_0^{1.5}\left[1-\frac{2}{\sqrt{6.25-(1.5-x)^2}}\right]dx
+\approx \boxed{3.3458\,\mathrm{m^2}}.
+\end{align}
+The simplification uses $1+(1.5-x)^2/[6.25-(1.5-x)^2]=6.25/[6.25-(1.5-x)^2]$.
+
+\subsubsection{Surface areas of the two designs}
+Applying (\ref{eq:area-general}) to the outer ogive and to the two inner
+profiles of Section~\ref{sec:fairing-compare} (evaluated numerically) gives
+\begin{table}[H]\centering\small
+\caption{Surface areas of the outer and inner profiles over $0\le x\le1.5$\,m.}
+\begin{tabular}{lc}\toprule
+Surface & Area ($\mathrm{m^2}$)\\\midrule
+Outer ogive $y_o$ & 3.3458\\
+Baseline inner $0.9y_o$ & 2.9889\\
+Modified inner cubic $y_{i,c}$ & 3.1523\\\bottomrule
+\end{tabular}
+\end{table}
+The outer area is shared by both designs. The cubic inner surface is
+$0.1634\,\mathrm{m^2}$ larger than the baseline inner surface because its
+inner radius is larger over most of the nose (a thinner wall); the same
+larger radius gives the larger internal volume. Area alone does not determine
+mass: the material volume
+$V_{\rm material}=\pi\int_0^L(y_o^2-y_i^2)\,dx$ of
+Section~\ref{sec:fairing-compare} does. For a uniform skin of thickness $t$,
+$m\approx\rho_m tA$ is only a first-order check; joints, stiffeners and
+thermal protection are not included.
+
+\subsection{Triple Integrals: Fuel-Tank Volume and Mass}
+The LOX oxidiser and RP-1 fuel are stored in separate tanks. The adopted design inputs are total propellant mass $m_p=4330\,\mathrm{kg}$, oxidiser-to-fuel mass ratio $m_{\rm LOX}/m_{\rm RP1}=2.7$, densities $\rho_{\rm LOX}=1142\,\mathrm{kg\,m^{-3}}$ and $\rho_{\rm RP1}=810\,\mathrm{kg\,m^{-3}}$. Each tank comprises a cylinder of radius $r=0.45\,\mathrm{m}$ and length $\ell$, joined to two half-ellipsoidal caps; the caps together form one ellipsoid with axial semi-axis $c=0.30\,\mathrm{m}$.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.63\linewidth]{Fig_4_4_1_Tank_Geometry.png}
+\caption{Idealised separate propellant tanks: cylindrical barrels with ellipsoidal end caps.}\label{fig:tanks}
+\end{figure}
+
+\subsubsection{Propellant mass and liquid-volume allocation} From $m_p=m_{\rm LOX}+m_{\rm RP1}$ and $m_{\rm LOX}=2.7m_{\rm RP1}$,
+\begin{equation}
+m_{\rm RP1}=\frac{4330}{3.7}=1170.27\,\mathrm{kg},\qquad
+m_{\rm LOX}=3159.73\,\mathrm{kg}.
+\end{equation}
+The required liquid volumes follow from $V=m/\rho$:
+\begin{equation}
+V_{\rm LOX}=\frac{3159.73}{1142}=2.76684\,\mathrm{m^3},\qquad
+V_{\rm RP1}=\frac{1170.27}{810}=1.44478\,\mathrm{m^3}.
+\end{equation}
+
+\subsubsection{Triple-integral tank geometry} In cylindrical coordinates $(s,\theta,z)$, the Jacobian is $s$. The cylindrical barrel volume is therefore
+\begin{equation}
+V_{\rm cyl}=\int_0^\ell\!\int_0^{2\pi}\!\int_0^r s\,ds\,d\theta\,dz
+=\pi r^2\ell.
+\end{equation}
+For the joined ellipsoidal caps, the radial boundary is $s=r\sqrt{1-x^2/c^2}$ for $-c\leq x\leq c$. Thus
+\begin{align}
+V_{\rm caps}&=\int_{-c}^{c}\!\int_0^{2\pi}\!\int_0^{r\sqrt{1-x^2/c^2}}s\,ds\,d\theta\,dx\\
+&=\pi r^2\int_{-c}^{c}\left(1-\frac{x^2}{c^2}\right)dx
+=\frac{4}{3}\pi r^2c.
+\end{align}
+The Jacobian factor $s$ in cylindrical coordinates is essential because the
+circumference of each cylindrical shell increases with radius. The cap integral
+uses the ellipsoidal radial boundary and gives the volume of both half-caps together.
+\begin{figure}[H]\centering
+\includegraphics[width=0.46\linewidth]{Fig_4_4_2_Cylindrical_dV.png}\hfill
+\includegraphics[width=0.46\linewidth]{Fig_4_4_3_Ellipsoidal_Caps.png}
+\caption{Differential cylindrical volume and ellipsoidal-cap integration domain.}
+\label{fig:volume-elements}
+\end{figure}
+Consequently, $V_{\rm tank}=\pi r^2\ell+\frac43\pi r^2c$. A 2.5\% ullage allowance is applied as a stated design assumption, so $V_{\rm capacity}=V_{\rm liquid}/0.975$. This gives capacities of $2.83778\,\mathrm{m^3}$ (LOX) and $1.48182\,\mathrm{m^3}$ (RP-1), or $4.31961\,\mathrm{m^3}$ combined. The fixed cap volume is $\frac43\pi(0.45)^2(0.30)=0.25447\,\mathrm{m^3}$ and the barrel area is $\pi(0.45)^2=0.63617\,\mathrm{m^2}$. Solving for the barrel length,
+\begin{equation}
+\ell=\frac{V_{\rm capacity}-\frac43\pi r^2c}{\pi r^2},
+\end{equation}
+yields the dimensions in Table~\ref{tab:tank-results}.
+\begin{table}[H]\centering\small
+\caption{Calculated propellant quantities and idealised internal tank dimensions.}\label{tab:tank-results}
+\begin{tabular}{lrr}\toprule
+&\textbf{LOX}&\textbf{RP-1}\\\midrule
+Mass (kg)&3159.73&1170.27\\
+Liquid volume (m$^3$)&2.76684&1.44478\\
+Capacity incl. ullage (m$^3$)&2.83778&1.48182\\
+Cylindrical length $\ell$ (m)&4.06071&1.92928\\
+Overall length $\ell+2c$ (m)&4.66071&2.52928\\\bottomrule
+\end{tabular}
+\end{table}
+\subsubsection{Tank-sizing sensitivity and checks} Rearranging the volume equation gives $\ell=V_{\rm capacity}/(\pi r^2)-4c/3$. Hence
+\begin{equation}
+ \frac{\partial\ell}{\partial V_{\rm capacity}}=\frac{1}{\pi r^2}=1.5719\,\mathrm{m^{-2}},\qquad
+ \frac{\partial\ell}{\partial r}=-\frac{2V_{\rm capacity}}{\pi r^3}.
+\end{equation}
+At the selected radius, an extra $0.10\,\mathrm{m^3}$ of capacity adds about
+$0.157$\,m of barrel length, and a wider tank needs a shorter barrel at fixed
+capacity. Raising the ullage fraction $u$ in
+$V_{\rm capacity}=V_{\rm liquid}/(1-u)$ lengthens the barrel. All terms in
+$V_{\rm tank}$ have units of $\mathrm{m^3}$, and the positive barrel lengths
+show the cap geometry leaves a feasible cylindrical section. These are ideal
+internal dimensions; wall thickness, insulation, supports and pressurisation
+are excluded \cite{flaherty,nist}.
+
+\subsection{Line Integrals: Work Done by Forces}
+Work by a force field along a path $C$ is $W=\int_C\mathbf F\cdot d\mathbf r$. For the model's one-dimensional, upward powered ascent, $\mathbf r(t)=h(t)\hat{\mathbf k}$ and $d\mathbf r=v(t)\hat{\mathbf k}\,dt$, from $t=0$ to burnout $t_b$. The instantaneous rocket mass is $m(t)$ and gravity varies with altitude as
+\begin{equation}
+g(h)=g_0\left(\frac{R_E}{R_E+h}\right)^2,
+\quad g_0=9.80665\,\mathrm{m\,s^{-2}},\quad R_E=6.371\times10^6\,\mathrm{m}.
+\end{equation}
+
+\subsubsection{ Gravitational work} Since gravity acts downward, $\mathbf F_g=-m(t)g(h(t))\hat{\mathbf k}$, and
+\begin{equation}\label{eq:wg}
+W_g=\int_0^{t_b}\mathbf F_g\cdot\dot{\mathbf r}\,dt
+=-\int_0^{t_b}m(t)g(h(t))v(t)\,dt.
+\end{equation}
+\subsubsection{Aerodynamic-drag work} For upward velocity, drag is also downward. Its magnitude is modelled as $D(t)=\frac12\rho_a(h(t))C_dAv(t)^2$, with baseline $C_d=0.3$ and frontal reference area $A=\pi(0.5)^2=0.785398\,\mathrm{m^2}$. Hence
+\begin{equation}\label{eq:wd}
+W_D=-\int_0^{t_b}D(t)v(t)\,dt.
+\end{equation}
+\begin{figure}[H]\centering
+\includegraphics[width=0.43\linewidth]{Fig_4_5_1_Rocket_Free_Body.png}\hfill
+\includegraphics[width=0.43\linewidth]{Fig_4_5_2_Line_Integral_Path.png}
+\caption{Forces during vertical ascent and the path over which work is evaluated.}
+\label{fig:work-path}
+\end{figure}
+The negative signs in (\ref{eq:wg})--(\ref{eq:wd}) follow directly from the dot product: both forces oppose the upward displacement.
+
+The trajectory is computed with the baseline model of Section~\ref{sec:euler} using explicit Euler integration at $\Delta t=0.01\,\mathrm{s}$, with the final step shortened to reach propellant depletion. The line integrals are evaluated on that same trajectory. With $g_i=g(h_i)$ and $D_i=\frac12\rho_a(h_i)C_dAv_i^2$, the trapezoidal sums in altitude are
+\begin{equation}
+W_g\approx-\sum_i\frac{m_ig_i+m_{i+1}g_{i+1}}2\,(h_{i+1}-h_i),\quad
+W_D\approx-\sum_i\frac{D_i+D_{i+1}}2\,(h_{i+1}-h_i).
+\end{equation}
+The substitution $dh=v\,dt$ converts the time integrals into force--displacement
+integrals. At each pair of adjacent trajectory points, the force is averaged at
+the endpoints and multiplied by the altitude increment. The same Euler trajectory
+is used for both work terms, ensuring that their numerical estimates correspond to
+the same ascent history. The final shortened integration step ensures that the
+mass reaches the prescribed burnout value rather than overshooting it.
+\begin{table}[H]\centering\small
+\caption{Work contributions over the modelled baseline powered ascent.}\label{tab:work-results}
+\begin{tabular}{lr}\toprule
+\textbf{Quantity}&\textbf{Numerical result}\\\midrule
+Gravity work $W_g$ & $-3.014654$ GJ\\
+Drag work $W_D$ & $-230.470$ MJ\\
+$|W_D|/|W_g|$ & $7.64\%$\\\bottomrule
+\end{tabular}
+\end{table}
+\\subsubsection{Numerical Evaluation and Interpretation}
+
+Using $dh=v\,dt$, the work integrals can be
+evaluated along the rocket's altitude trajectory.
+The trapezoidal rule is applied using the same
+Euler-method trajectory for both forces.
+
+The calculated gravitational work is
+$-3.014654$ GJ, while the aerodynamic-drag work
+is $-230.470$ MJ. Both values are negative
+because gravity and drag oppose the upward motion.
+
+The ratio of their magnitudes is
+\[
+\frac{|W_D|}{|W_g|}\times100=7.64\%.
+\]
+
+This indicates that gravitational work is larger
+than drag work in the modelled powered ascent.
+These estimates depend on the assumed atmosphere,
+drag coefficient and vertical trajectory. They
+are model results, not measured flight data.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.52\linewidth]{Fig_4_5_3_Work_Contributions.png}
+\caption{Relative magnitudes of gravitational and aerodynamic work.}
+\label{fig:work-contributions}
+\end{figure}
+
+
+% --------------------------------------------------
+% 4.6 Numerical Solution Using Euler's Method
+% --------------------------------------------------
+
+\subsection{Numerical Solution Using Euler's Method}
+\label{sec:euler}
+The coupled differential equations do not have a simple analytical solution because the acceleration depends on changing mass, altitude, atmospheric density and velocity. Therefore, a numerical method is used to approximate the rocket's motion over small time intervals.
+Euler's method approximates the value of a variable at the next time step using its current value and rate of change.
+Let the time step be \(\Delta t\), and let the values at the \(n\)-th time step be \(h_n\), \(v_n\) and \(m_n\).
+
+The altitude is updated using
+\[
+\boxed{
+h_{n+1}=h_n+v_n\Delta t
+}
+\]
+The acceleration at each time step is calculated from the force equation:
+\[
+a_n=
+\frac{T-D_n-m_ng(h_n)}{m_n}.
+\]
+The velocity is then updated using
+\[
+\boxed{
+v_{n+1}=v_n+a_n\Delta t
+}
+\]
+The mass is updated using the constant mass-flow rate:
+\[
+\boxed{
+m_{n+1}=m_n-\dot{m}\Delta t
+}
+\]
+All runs use $\Delta t=0.01$\,s, $T=100$\,kN, $I_{sp}=305$\,s,
+$\dot m=33.4333$\,kg/s and the atmosphere of Section~4.1, starting from
+$h_0=v_0=0$ and $m_0=m_{\rm dry}+4330$\,kg. At each step density, drag and
+gravity are recomputed from the current state, and the loop runs until the
+propellant is exhausted, with the last step shortened so the mass stops
+exactly at $m_{\rm dry}$. The numerical results are summarised in
+Table 7.
+
+% --------------------------------------------------
+% 4.7 Material Volume and Structural Mass of the Fairing
+% --------------------------------------------------
+
+
+\subsection{Comparison of Baseline and Modified Fairing Geometry}
+\label{sec:fairing-compare}
+The objective is to reduce the material mass of the fairing while
+maintaining the same external geometry. Both designs use a fixed
+tangent-ogive outer profile, but differ in their internal profiles.
+The comparison is based on internal volume, material volume,
+estimated mass and minimum wall thickness.
+
+\subsubsection{Outer and Inner Profiles}
+
+The outer profile is represented by the tangent-ogive equation
+
+\begin{equation}
+y_o(x)=R-\rho+\sqrt{\rho^2-(L-x)^2},
+\end{equation}
+
+where $R=0.50\,\mathrm{m}$, $L=1.50\,\mathrm{m}$ and
+\[
+\rho=\frac{R^2+L^2}{2R}=2.50\,\mathrm{m}.
+\]
+
+The baseline design uses an inner radius equal to 90\% of the
+outer radius:
+
+\begin{equation}
+y_{i,b}(x)=0.9y_o(x).
+\end{equation}
+
+For the modified design, the inner profile is represented by
+a cubic polynomial. Let
+
+\begin{equation}
+y_{i,c}(x)=Au^3+Bu^2+Cu,
+\qquad u=\frac{x}{L}.
+\end{equation}
+
+We impose the boundary conditions
+
+\begin{equation}
+y_{i,c}(0)=0,\qquad
+y_{i,c}(L)=0.48,\qquad
+y'_{i,c}(L)=0.
+\end{equation}
+
+These conditions ensure that the profile closes at the tip,
+has an inner radius of $0.48\,\mathrm{m}$ at the base, and
+has a horizontal tangent at the base.
+
+Applying the conditions gives
+
+\begin{align}
+A+B+C&=0.48,\\
+3A+2B+C&=0.
+\end{align}
+
+Solving in terms of the free coefficient $C$,
+
+\begin{equation}
+A=C-0.96,\qquad B=1.44-2C.
+\end{equation}
+
+The remaining coefficient is selected using the wall-thickness
+condition at $x=0.4\,\mathrm{m}$:
+
+\begin{equation}
+y_o(0.4)-y_{i,c}(0.4)=0.020\,\mathrm{m}.
+\end{equation}
+
+Solving numerically gives $C\approx0.98181035$. Hence, the
+modified inner profile is
+
+\begin{equation}
+\boxed{
+y_{i,c}(x)=
+0.02181035u^3-0.52362070u^2+0.98181035u
+}
+\end{equation}
+
+where $u=x/1.5$.
+
+The wall thickness is defined as
+
+\begin{equation}
+t(x)=y_o(x)-y_{i,c}(x).
+\end{equation}
+Numerical checking confirms $t(x)\ge0.020$\,m for $0.4\le x\le1.5$\,m, with
+equality at $x=0.4$\,m and at the join. For both designs the wall tapers to
+zero at the tip, so the minimum thickness is claimed only over this interval;
+for example, the modified wall is about $0.014$\,m at $x=0.2$\,m.
+
+\subsubsection{Internal and Material Volume}
+
+Since the fairing is a hollow surface of revolution, its
+internal volume is calculated using
+
+\begin{equation}
+V_{\mathrm{internal}}
+=\pi\int_0^L y_i(x)^2\,dx.
+\end{equation}
+
+For the two designs,
+
+\begin{align}
+V_{\mathrm{internal},b}
+&=\pi\int_0^{1.5}(0.9y_o(x))^2\,dx
+\approx0.524807\,\mathrm{m^3},\\
+V_{\mathrm{internal},c}
+&=\pi\int_0^{1.5}y_{i,c}(x)^2\,dx
+\approx0.584013\,\mathrm{m^3}.
+\end{align}
+
+The material occupies the region between the outer and inner
+profiles. Therefore,
+
+\begin{equation}
+V_{\mathrm{material}}
+=\pi\int_0^L
+\left[y_o(x)^2-y_i(x)^2\right]dx.
+\end{equation}
+
+Numerical integration gives
+
+\begin{align}
+V_{\mathrm{material},b}
+&\approx0.123103\,\mathrm{m^3},\\
+V_{\mathrm{material},c}
+&\approx0.063897\,\mathrm{m^3}.
+\end{align}
+
+Thus, the modified design provides a larger internal volume
+while requiring less material.
+
+\subsubsection{Fairing Mass and Design Comparison}
+
+Assuming aluminium 6061 with density
+$\rho_m=2700\,\mathrm{kg/m^3}$, the estimated material mass is
+
+\begin{equation}
+M=\rho_m V_{\mathrm{material}}.
+\end{equation}
+
+Therefore,
+
+\begin{align}
+M_b&=2700(0.123103)\approx332.38\,\mathrm{kg},\\
+M_c&=2700(0.063897)\approx172.52\,\mathrm{kg}.
+\end{align}
+
+The reduction in estimated material mass is
+
+\begin{align}
+\Delta M&=M_b-M_c\\
+&=332.38-172.52\\
+&=159.86\,\mathrm{kg}.
+\end{align}
+
+The percentage reduction is
+
+\begin{equation}
+\frac{M_b-M_c}{M_b}\times100
+\approx48.09\%.
+\end{equation}
+
+\begin{table}[h]
+\centering
+\caption{Comparison of baseline and modified fairing designs}\label{tab:fairing_results}
+\begin{tabular}{lcc}
+\hline
+\textbf{Parameter} & \textbf{Baseline} & \textbf{Modified Cubic}\\
+\hline
+Outer profile & Tangent-ogive & Tangent-ogive\\
+Inner profile & $0.9y_o(x)$ & Cubic polynomial\\
+Internal volume ($\mathrm{m^3}$) & 0.524807 & 0.584013\\
+Material volume ($\mathrm{m^3}$) & 0.123103 & 0.063897\\
+Material mass (kg) & 332.38 & 172.52\\
+Minimum wall thickness, $0.4\le x\le1.5$\,m (m) & 0.0245 & 0.0200\\
+\hline
+\end{tabular}
+\end{table}
+
+The modified cubic design reduces the theoretical fairing
+material mass by approximately 48.09\% while increasing the
+internal volume. It also satisfies the specified minimum
+wall-thickness condition over the evaluated interval.
+
+This is a geometric material-mass estimate and does not
+establish the structural safety of a flight-ready fairing.
+
+% ==================================================
+% 5. COMPUTATIONAL / NUMERICAL ANALYSIS
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Computational and Numerical Analysis}}
+\subsection{Computational Method}
+The volume integrals are evaluated numerically (trapezoidal rule, $10^5$
+points) and the ascent equations are solved with Euler's method
+(Section~\ref{sec:euler}), using the same $\Delta t$ for both designs so that
+they differ only in fairing mass. The code is in Appendix~\ref{app:code}.
+
+
+
+\subsection{Three-dimensional Visualisation}
+
+The two fairing designs are represented as hollow surfaces
+of revolution. Both use the same outer tangent-ogive profile,
+but their inner profiles differ.
+
+% Outer tangent-ogive profile
+\pgfmathdeclarefunction{outerr}{1}{%
+    \pgfmathparse{
+        -2+sqrt(6.25-(1.5-(#1))^2)
+    }%
+}
+
+% Baseline inner profile
+\pgfmathdeclarefunction{baseline}{1}{%
+    \pgfmathparse{0.9*outerr(#1)}%
+}
+
+% Modified cubic inner profile
+\pgfmathdeclarefunction{modifiedcubic}{1}{%
+    \pgfmathparse{
+        0.02181035*(#1/1.5)^3
+        -0.52362070*(#1/1.5)^2
+        +0.98181035*(#1/1.5)
+    }%
+}
+
+\begin{figure}[H]
+\centering
+
+\begin{tikzpicture}
+
+\begin{groupplot}[
+    group style={
+        group size=2 by 1,
+        horizontal sep=1.2cm
+    },
+    width=7.5cm,
+    height=7cm,
+    view={-55}{25}, unit vector ratio*=1 1 1,
+    xmin=0, xmax=1.5,
+    ymin=-0.55, ymax=0.55,
+    zmin=-0.55, zmax=0.55,
+    xlabel={Axial distance (m)},
+    ylabel={$Y$ (m)},
+    zlabel={$Z$ (m)},
+    ticks=none,
+    axis lines=box,
+    title style={font=\small},
+]
+
+% BASELINE FAIRING
+\nextgroupplot[
+    title={Baseline Fairing}
+]
+
+% Outer surface
+\addplot3[
+    surf,
+    shader=interp,
+    opacity=0.7,
+    samples=35,
+    samples y=50,
+    domain=0:1.5,
+    y domain=0:360,
+]
+(
+    {x},
+    {outerr(x)*cos(y)},
+    {outerr(x)*sin(y)}
+);
+
+% Baseline inner surface
+\addplot3[
+    surf,
+    shader=interp,
+    opacity=0.9,
+    samples=35,
+    samples y=50,
+    domain=0:1.5,
+    y domain=0:360,
+]
+(
+    {x},
+    {baseline(x)*cos(y)},
+    {baseline(x)*sin(y)}
+);
+
+% MODIFIED CUBIC FAIRING
+\nextgroupplot[
+    title={Modified Cubic Fairing}
+]
+
+% Outer surface
+\addplot3[
+    surf,
+    shader=interp,
+    opacity=0.7,
+    samples=35,
+    samples y=50,
+    domain=0:1.5,
+    y domain=0:360,
+]
+(
+    {x},
+    {outerr(x)*cos(y)},
+    {outerr(x)*sin(y)}
+);
+
+% Modified cubic inner surface
+\addplot3[
+    surf,
+    shader=interp,
+    opacity=0.9,
+    samples=35,
+    samples y=50,
+    domain=0:1.5,
+    y domain=0:360,
+]
+(
+    {x},
+    {modifiedcubic(x)*cos(y)},
+    {modifiedcubic(x)*sin(y)}
+);
+
+\end{groupplot}
+
+\end{tikzpicture}
+
+\caption{Three-dimensional comparison of the baseline and
+modified cubic fairing designs. Both designs have the same
+outer tangent-ogive profile but different inner profiles.}
+\label{fig:3d_fairing}
+
+\end{figure}
+
+
+
+% ==================================================
+% 6. RESULTS
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Results}}
+ The results include the internal and material volumes,
+estimated fairing masses, propellant requirements, and the predicted
+flight quantities under the assumptions of the model.
+\subsection{Comparison of Fairing Geometry}
+The volume integrals and masses of Section~\ref{sec:fairing-compare} are
+summarised in Table~\ref{tab:fairing_results}. The modified inner profile
+increases the internal volume by $0.059206\,\mathrm{m^3}$ and reduces the
+material volume by the same amount, since the outer profile is unchanged.
+With $\rho_m=2700\,\mathrm{kg/m^3}$ this is a reduction of $159.86$\,kg
+($48.09\%$) in estimated fairing material mass, while meeting the $0.020$\,m
+thickness condition over $0.4\le x\le1.5$\,m.
+
+\subsection{Graphical Comparison of Fairing Mass}
+
+Figure~\ref{fig:mass_comparison} compares the estimated material mass
+of the two designs. The graph highlights the reduction associated
+with changing the internal profile while keeping the external profile
+unchanged.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=25pt,
+    width=0.75\textwidth,
+    height=7cm,
+    ylabel={Estimated material mass (kg)},
+    symbolic x coords={Baseline,Modified},
+    xtick=data,
+    ymin=0,
+    ymax=400,
+    nodes near coords,
+    nodes near coords align={vertical},
+    enlarge x limits=0.35,
+    grid=major,
+    title={Estimated Fairing Material Mass}
+]
+\addplot coordinates {
+    (Baseline,332.38)
+    (Modified,172.52)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Estimated material mass of the baseline and modified fairing designs.}
+\label{fig:mass_comparison}
+\end{figure}
+\subsection{Propellant and Engine Calculations}
+The propellant split, liquid volumes and tank sizes are in Section~4.5 and
+Table~\ref{tab:tank-results}. The reference values $I_{sp}=305$\,s and
+$T=100$\,kN \cite{flaherty} give
+\[
+\dot m=\frac{T}{I_{sp}g_0}=33.4333\ \mathrm{kg/s},\qquad
+t_b=\frac{4330}{33.4333}\approx129.51\ \mathrm{s}.
+\]
+For the baseline, $m_0=900+4330=5230$\,kg and \cite{rocket}
+\[
+\Delta v=I_{sp}g_0\ln\frac{m_0}{m_f}=305(9.80665)\ln\frac{5230}{900}
+\approx5.26\ \mathrm{km/s}.
+\]
+This ideal value excludes gravity and drag losses and is not the flight speed.
+
+
+\subsection{Numerical Results of Powered Ascent}
+
+The coupled ordinary differential equations for altitude, velocity
+and mass were solved using Euler's method. The two simulations use
+the same thrust, specific impulse, propellant mass and aerodynamic
+parameters. The difference is the estimated fairing mass.
+
+The modified fairing reduces the initial vehicle mass by
+$159.86\ \mathrm{kg}$. Therefore,
+
+\[
+m_{0,c}=5230-159.86=5070.14\ \mathrm{kg}.
+\]
+
+The corresponding modified dry mass is
+
+\[
+m_{\mathrm{dry},c}=900-159.86=740.14\ \mathrm{kg}.
+\]
+We assume the fairing is part of the $900$\,kg dry mass. Since the propellant
+is unchanged, the burn time is the same, and the gain comes entirely from the
+lower final mass (about $+490$\,m/s in ideal $\Delta v$).
+The numerical outputs obtained from the simplified ascent model
+are summarised in \caption{Numerical results of powered ascent}
+\label{tab:ascent_results}
+
+\begin{table}[H]
+\centering
+\caption{Comparison of powered-ascent results}
+\label{tab:ascent_results}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Quantity} & \textbf{Baseline} & \textbf{Modified}\\
+\hline
+Initial mass (kg) & 5230.00 & 5070.14\\
+Dry mass (kg) & 900.00 & 740.14\\
+Burnout time (s) & 129.51 & 129.51\\
+Modelled burnout altitude (km) & 153.35 & 166.87\\
+Modelled burnout velocity (km/s) & 3.885 & 4.371\\
+Peak dynamic pressure (kPa) & 49.17 & 51.62\\
+\hline
+\end{tabular}
+\end{table}
+
+The model predicts a higher burnout altitude and velocity for the
+modified design under the same assumed propulsion conditions.
+The peak dynamic pressure also changes between the two simulations.
+
+These outputs are numerical results of the simplified model.
+The atmospheric density is calculated using the U.S. Standard
+Atmosphere 1976 layer equations up to 84.852 km geopotential
+altitude. Above this limit, atmospheric density is set to zero
+as a simplifying assumption in the numerical model. Therefore,
+aerodynamic drag is neglected above this altitude. The predicted
+burnout altitude and velocity should consequently be interpreted
+as outputs of the simplified powered-ascent model rather than
+validated flight predictions.
+
+\subsection{Summary of Main Findings}
+
+The principal findings are:
+
+\begin{itemize}
+    \item The modified cubic fairing has an estimated material mass
+    of $172.52\ \mathrm{kg}$ compared with $332.38\ \mathrm{kg}$
+    for the baseline design.
+
+    \item The estimated fairing material mass is reduced by
+    approximately $48.09\%$.
+
+    \item The modified design provides an additional internal
+    volume of approximately $0.059206\ \mathrm{m^3}$.
+
+    \item 
+The modified profile satisfies the specified minimum
+wall thickness of 0.020 m over the design interval
+$0.4 \leq x \leq 1.5$ m.
+
+The thickness is smaller closer to the tip, where both
+profiles approach zero radius. Therefore, the thickness
+requirement is not claimed over the full nose length.
+
+    \item The LOX/RP-1 model gives a propellant split of
+    $3159.73\ \mathrm{kg}$ LOX and $1170.27\ \mathrm{kg}$ RP-1.
+
+    \item The simplified ascent simulation indicates that reducing
+    the estimated fairing mass can improve the modelled powered
+    ascent performance.
+\end{itemize}
+
+
+
+
+% ==================================================
+% 7. DISCUSSION
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Discussion}}
+
+
+The results demonstrate how changing the internal geometry of a
+rocket nose fairing can influence its estimated material requirements
+and the behaviour predicted by a simplified powered-ascent model.
+The comparison also illustrates how mathematical modelling,
+integration and numerical methods can be used together to study an
+engineering design problem.
+
+\subsection{Interpretation of the Fairing Results}
+
+The most significant result is the reduction in estimated fairing
+material mass from $332.38\ \mathrm{kg}$ to
+$172.52\ \mathrm{kg}$. This corresponds to a reduction of
+approximately $48.09\%$.
+
+The reduction occurs because the modified cubic inner profile
+encloses a larger internal volume while the external tangent-ogive
+profile remains unchanged. Since the material occupies the region
+between the inner and outer profiles, increasing the internal volume
+reduces the volume of material required.
+
+The modified design also provides an internal volume of
+$0.584013\ \mathrm{m^3}$, compared with
+$0.524807\ \mathrm{m^3}$ for the baseline design. Therefore, the
+modified profile satisfies the requirement of maintaining at least
+the baseline internal volume.
+
+The minimum wall thickness of the modified design is
+$0.020\ \mathrm{m}$ over $0.4\le x\le1.5$,m. This shows that
+the geometric constraint used in the mathematical formulation is
+satisfied. However, satisfying a geometric thickness condition does
+not establish that the fairing can withstand the mechanical and
+thermal loads experienced during launch.
+
+The mass reduction should consequently be interpreted as a theoretical
+material-saving estimate rather than a confirmed reduction in the
+mass of a flight-ready structure.
+
+\subsection{Importance of the Mathematical Concepts}
+
+Several mathematical concepts from Advanced Calculus were important
+in developing the model.
+
+\begin{itemize}
+    \item \textbf{Surface modelling:}
+    The nose fairing was represented as a surface of revolution.
+    The parameterisation
+    \[
+    \mathbf{X}(x,\theta)=
+    \left(x,y(x)\cos\theta,y(x)\sin\theta\right)
+    \]
+    allowed a two-dimensional profile to describe a three-dimensional
+    axisymmetric structure.
+
+    \item \textbf{Continuity and differentiability:}
+The ogive meets the body with matching height and slope ($C^1$) but not
+curvature ($C^2$ fails, with a jump of $1/\rho=0.400\ \mathrm{m^{-1}}$).
+
+    \item \textbf{Definite integration:}
+    The volume of revolution formula was used to calculate the
+    internal volume and material volume. These integrals connected
+    the mathematical profiles directly to physical quantities
+    such as volume and estimated mass.
+
+    \item \textbf{Ordinary differential equations:}
+    The rocket's vertical motion was described through a coupled
+    system of differential equations for altitude, velocity and
+    mass. These equations account for thrust, gravity, drag and
+    propellant consumption.
+
+    \item \textbf{Numerical methods:}
+    Euler's method was used to approximate the solution of the
+    coupled differential equations at successive time steps.
+    This made it possible to estimate the rocket's motion when
+    the governing equations could not be solved conveniently
+    in closed form.
+\end{itemize}
+
+Together, these concepts demonstrate how calculus can be used to
+describe geometry, calculate physical quantities and model the
+time-dependent behaviour of a system.
+
+\subsection{Analytical and Numerical Results}
+
+The geometric part of the project begins with analytical
+representations of the outer and inner fairing profiles. Their
+derivatives are obtained from the defining functions, and the
+volume expressions are formulated using definite integrals.
+
+The resulting volume integrals are evaluated numerically to obtain
+the reported internal and material volumes. Therefore, the
+geometric results combine analytical modelling with numerical
+integration.
+
+The ascent model is different. Its governing equations form a
+coupled system in which acceleration depends on changing mass,
+altitude, velocity, atmospheric density and gravitational
+acceleration. Since these quantities change together during flight,
+Euler's method is used to approximate their evolution over time.
+
+The numerical ascent results indicate that the modified design,
+which has a lower estimated fairing mass, reaches a higher
+modelled burnout velocity and altitude under the selected
+assumptions. This is consistent with the general expectation
+that reducing vehicle mass can improve acceleration when the
+propulsion conditions are unchanged.
+The numerical results depend on the time step ($\Delta t=0.01$\,s, not varied
+here) and on the gravity, atmosphere and drag models, so they are estimates
+rather than exact predictions.
+
+\subsection{Assumptions Influencing the Results}
+
+The results depend on several assumptions made during the
+mathematical formulation.
+
+\begin{itemize}
+    \item \textbf{Fairing geometry:}
+    The fairing is assumed to be axisymmetric and is represented
+    by ideal mathematical profiles. Manufacturing details,
+    joints, fasteners and local structural reinforcements are
+    not included.
+
+    \item \textbf{Material properties:}
+    Aluminium 6061 is assumed to have a density of
+    $2700\ \mathrm{kg/m^3}$. The calculation assumes that
+    the material volume is uniform and does not account for
+    additional structural components.
+
+    \item \textbf{Wall thickness:}
+    The minimum wall thickness is treated as a geometric
+    constraint. It is not derived from a structural stress,
+    buckling or thermal analysis.
+
+    \item \textbf{Propellant properties:}
+    The LOX and RP-1 densities, mixture ratio and reference
+    specific impulse are adopted from a published design-study
+    reference. Actual values depend on operating conditions
+    and temperature.
+
+    \item \textbf{Vehicle parameters:}
+    The total propellant mass of $4330\ \mathrm{kg}$,
+    dry mass of $900\ \mathrm{kg}$ and thrust of
+    $100\ \mathrm{kN}$ are preliminary design assumptions.
+    They do not describe a selected or validated rocket engine
+    and vehicle.
+
+    \item \textbf{Engine performance:}
+    Thrust and specific impulse are assumed constant throughout
+    the powered-ascent simulation. Actual engine performance
+    may vary during operation.
+
+    \item \textbf{Aerodynamic model:}
+    The drag coefficient is assumed constant at $C_D=0.3$.
+    In reality, the drag coefficient varies with Mach number,
+    Reynolds number, vehicle configuration and flow conditions.
+
+\item \textbf{Atmospheric model:}
+Atmospheric density is calculated using the U.S. Standard
+Atmosphere 1976 model up to the specified altitude limit.
+Above this limit, density is set to zero in the simulation.
+This simplification affects the predicted drag and makes
+the high-altitude results less reliable.
+
+\end{itemize}
+
+These assumptions simplify the mathematical model and make the
+calculations manageable, but they also influence the accuracy
+and interpretation of the results.
+
+\subsection{Limitations of the Analysis}
+
+Although the model provides a useful mathematical comparison,
+several limitations should be considered.
+
+First, the fairing mass calculation considers only the volume
+between the idealised inner and outer profiles. It does not
+include stiffeners, joints, attachment mechanisms, thermal
+protection or manufacturing allowances. The estimated mass
+therefore does not represent a complete fairing assembly.
+
+Second, the minimum wall-thickness condition alone cannot
+establish structural safety. A practical design would require
+stress analysis, buckling analysis, vibration assessment and
+evaluation of aerodynamic and thermal loading.
+
+Third, the propulsion model uses preliminary assumptions for
+thrust, dry mass and specific impulse. No specific engine has
+been selected, and a complete vehicle mass budget has not been
+established. The ideal rocket equation also excludes gravity
+and aerodynamic losses.
+
+Finally, the ascent simulation uses the U.S. Standard
+Atmosphere 1976 model up to 84.852 km geopotential
+altitude, above which atmospheric density is set to zero.
+This neglects aerodynamic drag at higher altitudes.
+The simulation also assumes a constant drag coefficient,
+although actual aerodynamic behaviour varies with flight
+conditions. The numerical burnout altitude and velocity
+should therefore not be treated as validated predictions
+of actual rocket performance.
+
+Further work should extend the atmospheric model to
+higher altitudes, use a more realistic aerodynamic
+coefficient, incorporate a validated engine model and
+include a complete structural design. These improvements
+would allow a more reliable assessment of the modified
+fairing and its effect on vehicle performance.
+
+
+% ==================================================
+% 8. CONCLUSION
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Conclusion}}
+
+
+This project compared two rocket nose fairing designs
+with a fixed external tangent-ogive profile and different
+internal geometries. The baseline design used an inner
+radius equal to $90\%$ of the outer radius, while the
+modified design used a constrained cubic polynomial.
+
+Using definite integration, the material volume was
+estimated as $0.123103\,\mathrm{m^3}$ for the baseline
+design and $0.063897\,\mathrm{m^3}$ for the modified
+design. At an assumed aluminium 6061 density of
+$2700\,\mathrm{kg/m^3}$, the estimated mass decreased
+from $332.38\,\mathrm{kg}$ to $172.52\,\mathrm{kg}$,
+representing a theoretical reduction of approximately
+$48.09\%$.
+
+The modified profile also provided a larger internal
+volume while satisfying the specified wall-thickness
+constraint over the evaluated interval.
+
+A simplified powered-ascent model was developed using
+ordinary differential equations and Euler's method.
+Its outputs illustrate the effect of the estimated mass
+change under the assumed conditions, but are not validated
+flight predictions.
+
+Overall, the project applied surface modelling,
+differentiation, definite integration and numerical
+methods to compare two geometric designs. Further
+structural and aerodynamic analysis would be required
+before either design could be considered flight-ready.
+
+% ==================================================
+% 9. CONTRIBUTION OF GROUP MEMBERS
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Contribution of Group Members}}
+
+The project was completed collaboratively, with members
+contributing to different aspects of the mathematical
+formulation, computational analysis, visualization and
+preparation of the final report. The contributions are
+summarised below.
+
+\begin{table}[H]
+\centering
+\caption{Contribution of group members.}
+\label{tab:contribution}
+\begin{tabular}{p{0.22\textwidth}p{0.65\textwidth}}
+\toprule
+\textbf{Member} & \textbf{Contribution}\\
+\midrule
+Ananya Goel & Mathematical analysis, derivation of relevant equations, interpretation of the geometric model and organizing the report structure.\\
+Meet Patel & Computational implementation, numerical calculations and evaluation of the mathematical model,presenting mathematical derivations and results clearly.\\
+Akshadha Bhutani & Mathematical modelling, formulation of the design problem and development of the governing equations.\\
+Akepati Gunavathi  & Graphical visualization, presentation of computational outputs and interpretation of the results,compiling references and supplementary material.\\
+Adhrit Didwania & Documentation and report preparation, maintaining consistency in notation and formatting.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ==================================================
+% 10. REFLECTION
+% ==================================================
+
+\section{\textcolor{plakshamagenta}{Group Reflection}}
+
+This project provided an opportunity to connect the concepts studied in Advanced Calculus with a practical engineering problem. Modelling a rocket nose fairing involved translating a physical structure into mathematical functions and using them to study its geometric properties.
+
+One of the main learning outcomes was understanding how surface modelling, differentiation and integration can be used to analyse a three-dimensional structure and calculate meaningful physical quantities such as surface area and volume.
+
+The project also introduced us to the role of ordinary differential equations in modelling dynamic systems. Developing a rocket ascent model and implementing Euler's method provided practical experience in approximating solutions to coupled differential equations.
+
+Another important takeaway was recognising the role of assumptions in mathematical modelling. Simplifying a complex physical system makes calculations possible, but the results must be interpreted within the limitations of those assumptions. This became particularly evident when analysing the propulsion and ascent model.
+
+Overall, the project strengthened our understanding of how analytical and numerical methods from Advanced Calculus can be applied to engineering problems. In future work, we would aim to incorporate more realistic physical parameters, validate the model against reliable engineering data and consider additional structural and aerodynamic constraints.
+
+\subsection*{\textcolor{plakshamagenta}{Acknowledgements}}
+
+We thank Professor Suresh Kumar for the opportunity
+to undertake this project in Advanced Calculus
+(FM116). We also acknowledge the NASA and NIST
+technical references used for the mathematical
+models and physical parameters, and all group
+members for their contributions.
+
+\begin{thebibliography}{99}
+
+\bibitem{nasa1973}
+G.~A. Crowell Sr., \textit{The Descriptive Geometry
+of Nose Cones}, 1996.
+
+\bibitem{farin2002}
+G.~Farin, \textit{Curves and Surfaces for CAGD:
+A Practical Guide}, 5th ed., Morgan Kaufmann, 2002.
+
+\bibitem{strang2016}
+G.~Strang and E.~Herman, \textit{Calculus Volume 3},
+OpenStax, 2016.
+
+\bibitem{flaherty}
+Flaherty, Kevin, et al. ``ESAS-Derived Earth Departure
+Stage Design for Human Mars Exploration,''
+AIAA SPACE 2011 Conference \& Exposition, 2011.
+
+\url{https://ntrs.nasa.gov/api/citations/20120003308/downloads/20120003308.pdf}
+
+\bibitem{atmosphere}
+NOAA, NASA and USAF.
+\textit{U.S. Standard Atmosphere, 1976}, 1976.
+
+\bibitem{drag}
+NASA, ``Drag Coefficient,''
+NASA Glenn Research Center.
+
+\bibitem{rocket}
+NASA, ``Ideal Rocket Equation,''
+NASA Glenn Research Center.
+
+\bibitem{nist}
+Outcalt, S.~L., Laesecke, A.~R., and Brumback, K.
+\textit{Thermophysical Properties Measurements of
+Rocket Propellants RP-1 and RP-2}. NIST, 2009.
+
+\end{thebibliography}
+
+% ==================================================
+% APPENDIX
+% ==================================================
+
+\appendix
+
+
+
+\section{\textcolor{plakshamagenta}{Code}}\label{app:code}
+
+The Python programs used for the fairing volume and mass
+calculations, as well as the idealised ascent simulation,
+are available in the project repository.
+
+\noindent
+\textbf{GitHub Repository:}
+\href{https://github.com/ananyagoel1301/rocket-fairing-mass-comparison}
+{\texttt{Rocket Fairing Mass Comparison}}
+
+The repository includes the source code, execution
+requirements and numerical outputs.
+\end{document}
