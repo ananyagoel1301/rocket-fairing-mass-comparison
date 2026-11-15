@@ -30,7 +30,7 @@ M_baseline = density * V_material_baseline
 M_modified = density * V_material_modified
 reduction = (M_baseline - M_modified) / M_baseline * 100
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     print(f"Baseline internal volume: {V_internal_baseline:.6f} m^3")
     print(f"Modified internal volume: {V_internal_modified:.6f} m^3")
     print(f"Baseline material volume: {V_material_baseline:.6f} m^3")
