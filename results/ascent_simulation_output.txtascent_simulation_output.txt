@@ -1,16 +1,63 @@
-Baseline burnout altitude (m): 152559.77343104267
-Baseline burnout velocity (m/s): 3868.595141944551
-Modified burnout altitude (m): 165996.28573275518
-Modified burnout velocity (m/s): 4353.337909305238
-Baseline maximum dynamic pressure (Pa): 45329.33844222415
-Modified maximum dynamic pressure (Pa): 47592.896281223526
-Spreadsheet runtime warmup failed during python startup
-Traceback (most recent call last):
-  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/patches/warm_spreadsheet_runtime_on_startup.py", line 26, in warm_spreadsheet_runtime_on_startup
-  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 785, in warm_spreadsheet_runtime
-  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 718, in _warm_feature_flows
-  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 509, in _warm_drawing_and_image_flows
-  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/generated/interface/models.py", line 32861, in bring_to_front
-  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/remote.py", line 764, in __call__
-  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/client.py", line 175, in call
-artifact_tool.rpc.client.RemoteError: Element ordering requires an owning element collection.
+ROCKET FAIRING ASCENT SIMULATION RESULTS
+========================================
+
+Model: Idealised 1-D vertical powered-ascent simulation
+Numerical method: Euler's method
+Atmosphere: U.S. Standard Atmosphere 1976 layered model
+Time step: 0.01 s (with a shortened final step at burnout)
+
+ENGINE AND MODEL PARAMETERS
+
+Thrust (N): 100000.0
+Specific impulse (s): 305.0
+Propellant mass (kg): 4330.0
+Mass flow rate (kg/s): 33.4180327869
+Drag coefficient: 0.3
+Reference area (m^2): 0.7854
+
+BASELINE DESIGN
+
+Initial mass (kg): 5230.00
+Dry mass (kg): 900.00
+Burnout time (s): 129.511523
+Burnout altitude (km): 153.350039
+Burnout velocity (m/s): 3885.285708
+Maximum dynamic pressure (kPa): 49.171719
+Maximum drag force (kN): 11.585840
+Gravitational work (GJ): -3.015070
+Drag work (MJ): -230.504392
+Drag/gravity work ratio (%): 7.645075
+
+MODIFIED DESIGN
+
+Initial mass (kg): 5070.14
+Dry mass (kg): 740.14
+Burnout time (s): 129.511523
+Burnout altitude (km): 166.872233
+Burnout velocity (m/s): 4371.082103
+Maximum dynamic pressure (kPa): 51.619175
+Maximum drag force (kN): 12.162510
+Gravitational work (GJ): -2.997955
+Drag work (MJ): -241.951538
+Drag/gravity work ratio (%): 8.070554
+
+COMPARISON
+
+Change in burnout altitude (km): +13.522193
+Change in burnout velocity (m/s): +485.796395
+Change in maximum dynamic pressure (kPa): +2.447456
+Change in maximum drag force (kN): +0.576669
+
+INTERPRETATION AND MODEL LIMITATIONS
+
+The modified design has a lower initial and dry mass because the fairing
+mass used in the model decreases from 332.38 kg to 172.52 kg, while the
+propellant mass is held constant. Under this idealised model, the modified
+design reaches a greater burnout altitude and velocity.
+
+This is a simplified vertical, one-dimensional powered-ascent model. It
+does not represent a complete launch vehicle trajectory or include staging,
+steering, changing thrust, or structural and stability constraints. The
+atmospheric density is set to zero above 84.852 km geopotential altitude;
+therefore, the model neglects atmospheric drag above that cutoff. Results
+should be treated as model estimates, not measured flight performance.
